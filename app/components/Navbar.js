@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Menu, X } from "lucide-react"; // You can use Heroicons or any other icon too
+import Image from "next/image";
+
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
