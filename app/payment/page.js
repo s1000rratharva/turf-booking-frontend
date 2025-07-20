@@ -10,7 +10,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { auth } from "../firebase";
-import { Suspense } from "react";
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -46,8 +45,7 @@ const PaymentPage = () => {
 
   const getEndTime = (slot) => {
     const [hour] = slot.split(":").map(Number);
-    if (isNaN(hour)) return "--:--";
-    return `${String(hour + 1).padStart(2, "0")}:00`;
+    return isNaN(hour) ? "--:--" : `${String(hour + 1).padStart(2, "0")}:00`;
   };
 
   const handlePayment = async () => {
@@ -59,7 +57,6 @@ const PaymentPage = () => {
 
     try {
       toast.loading("Creating Razorpay Order...");
-
       const res = await fetch("http://localhost:5000/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -72,8 +69,7 @@ const PaymentPage = () => {
       if (!data.id) throw new Error("Razorpay order creation failed");
 
       const rzp = new window.Razorpay({
-        key:
-          process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_hD5vT64kNs5EFN",
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_hD5vT64kNs5EFN",
         amount: totalAmount * 100,
         currency: "INR",
         name: "SuperKick Turf",
@@ -85,20 +81,16 @@ const PaymentPage = () => {
             const paymentId = response.razorpay_payment_id;
             const orderId = response.razorpay_order_id;
 
-            if (!paymentId || !orderId) {
-              throw new Error("Invalid payment response");
-            }
+            if (!paymentId || !orderId) throw new Error("Invalid payment response");
 
-            const activityCollection =
-              activity.toLowerCase() === "football"
-                ? "Football_Bookings"
-                : "Cricket_Bookings";
+            const collectionName =
+              activity.toLowerCase() === "football" ? "Football_Bookings" : "Cricket_Bookings";
 
             for (const slot of slots) {
               const [hour] = slot.split(":").map(Number);
               const endTime = `${String(hour + 1).padStart(2, "0")}:00`;
 
-              await addDoc(collection(db, activityCollection), {
+              await addDoc(collection(db, collectionName), {
                 userId: user.uid,
                 userEmail: user.email,
                 date,
@@ -111,7 +103,6 @@ const PaymentPage = () => {
               });
             }
 
-            // Send email after successful storage
             await fetch("/api/send-confirmation", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -156,29 +147,18 @@ const PaymentPage = () => {
   };
 
   if (!activity || !date || !slots.length) {
-    return (
-      <p className="text-center text-gray-500 mt-12">
-        Loading booking summary...
-      </p>
-    );
+    return <p className="text-center text-gray-500 mt-12">Loading booking summary...</p>;
   }
 
   return (
-      <Suspense fallback={<div>Loading...</div>}>
     <div className="p-6 max-w-3xl mx-auto bg-gradient-to-br from-gray-100 to-white min-h-screen">
       <div className="bg-white shadow-xl rounded-xl p-8">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Payment Summary
-        </h1>
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Payment Summary</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
           <div>
-            <p className="text-lg">
-              <span className="font-semibold">Activity:</span> {activity}
-            </p>
-            <p className="text-lg">
-              <span className="font-semibold">Date:</span> {date}
-            </p>
+            <p className="text-lg"><span className="font-semibold">Activity:</span> {activity}</p>
+            <p className="text-lg"><span className="font-semibold">Date:</span> {date}</p>
             <p className="text-lg font-semibold">Slot(s):</p>
             <ul className="list-disc list-inside mt-1">
               {slots.map((slot, idx) => (
@@ -190,14 +170,8 @@ const PaymentPage = () => {
           </div>
 
           <div className="bg-gray-50 p-4 rounded-xl shadow-sm">
-            <p className="text-lg">
-              <span className="font-semibold">Price per Hour:</span> ₹
-              {pricePerHour}
-            </p>
-            <p className="text-lg">
-              <span className="font-semibold">Total Duration:</span>{" "}
-              {slots.length} hour(s)
-            </p>
+            <p className="text-lg"><span className="font-semibold">Price per Hour:</span> ₹{pricePerHour}</p>
+            <p className="text-lg"><span className="font-semibold">Total Duration:</span> {slots.length} hour(s)</p>
             <p className="text-xl font-bold mt-4 text-green-700">
               Total Amount: ₹{totalAmount}
             </p>
@@ -212,7 +186,6 @@ const PaymentPage = () => {
         </button>
       </div>
     </div>
-    </Suspense>
   );
 };
 
