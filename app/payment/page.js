@@ -10,6 +10,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { auth } from "../firebase";
+import { Suspense } from "react";
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -163,6 +164,7 @@ const PaymentPage = () => {
   }
 
   return (
+      <Suspense fallback={<div>Loading...</div>}>
     <div className="p-6 max-w-3xl mx-auto bg-gradient-to-br from-gray-100 to-white min-h-screen">
       <div className="bg-white shadow-xl rounded-xl p-8">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
@@ -210,6 +212,7 @@ const PaymentPage = () => {
         </button>
       </div>
     </div>
+    </Suspense>
   );
 };
 

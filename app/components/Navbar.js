@@ -40,7 +40,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/">
           <div className="flex items-center space-x-2 cursor-pointer">
-            <img
+            <Image
               src="/logo.png"
               alt="Logo"
               className="h-10 w-10 rounded-lg shadow-md"

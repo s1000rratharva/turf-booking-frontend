@@ -8,7 +8,7 @@ const Cards = () => {
     {/* Review Card 1 */}
     <div className="bg-gray-50 rounded-xl p-6 shadow hover:shadow-md transition">
       <div className="flex items-center space-x-4 mb-4">
-        <img src="/avatar1.png" alt="User" className="w-12 h-12 rounded-full object-cover" />
+        <Image src="/avatar1.png" alt="User" className="w-12 h-12 rounded-full object-cover" />
         <div>
           <h4 className="font-bold text-green-700">Rahul Mehta</h4>
           <p className="text-sm text-gray-500">Cricket Enthusiast</p>
@@ -20,7 +20,7 @@ const Cards = () => {
     {/* Review Card 2 */}
     <div className="bg-gray-50 rounded-xl p-6 shadow hover:shadow-md transition">
       <div className="flex items-center space-x-4 mb-4">
-        <img src="/avatar2.png" alt="User" className="w-12 h-12 rounded-full object-cover" />
+        <Image src="/avatar2.png" alt="User" className="w-12 h-12 rounded-full object-cover" />
         <div>
           <h4 className="font-bold text-green-700">Neha Sharma</h4>
           <p className="text-sm text-gray-500">Football Captain</p>
@@ -32,7 +32,7 @@ const Cards = () => {
     {/* Review Card 3 */}
     <div className="bg-gray-50 rounded-xl p-6 shadow hover:shadow-md transition">
       <div className="flex items-center space-x-4 mb-4">
-        <img src="/avatar3.png" alt="User" className="w-12 h-12 rounded-full object-cover" />
+        <Image src="/avatar3.png" alt="User" className="w-12 h-12 rounded-full object-cover" />
         <div>
           <h4 className="font-bold text-green-700">Aarav Kulkarni</h4>
           <p className="text-sm text-gray-500">Student & Futsal Fan</p>
